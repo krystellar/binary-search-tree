@@ -182,73 +182,73 @@ private:
 int main() {
     binarySearchTree bst;
     
-    // bst.insert(50);
-    // bst.insert(30);
-    // bst.insert(70);
-    // bst.insert(20);
-    // bst.insert(40);
+    bst.insert(50);
+    bst.insert(30);
+    bst.insert(70);
+    bst.insert(20);
+    bst.insert(40);
     
-    // bst.inOrderTraversal();   // Output: 20 30 40 50 70
-    // bst.preOrderTraversal();  // Output: 50 30 20 40 70
-    // bst.postOrderTraversal(); // Output: 20 40 30 70 50 
-    // bst.breadthFirstTraversal(); // Output: 50 30 70 20 40
+    bst.inOrderTraversal();   // Output: 20 30 40 50 70
+    bst.preOrderTraversal();  // Output: 50 30 20 40 70
+    bst.postOrderTraversal(); // Output: 20 40 30 70 50 
+    bst.breadthFirstTraversal(); // Output: 50 30 70 20 40
 
-    int choice, value;
+    // int choice, value;
 
-    do {
-        cout << "\n====== BINARY SEARCH bst MENU ======\n";
-        cout << "1. Insert\n";
-        cout << "2. Delete\n";
-        cout << "3. Inorder Traversal\n";
-        cout << "4. Preorder Traversal\n";
-        cout << "5. Postorder Traversal\n";
-        cout << "6. Breadth-First Traversal\n";
-        cout << "7. Display\n";
-        cout << "8. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
+    // do {
+    //     cout << "\n====== BINARY SEARCH bst MENU ======\n";
+    //     cout << "1. Insert\n";
+    //     cout << "2. Delete\n";
+    //     cout << "3. Inorder Traversal\n";
+    //     cout << "4. Preorder Traversal\n";
+    //     cout << "5. Postorder Traversal\n";
+    //     cout << "6. Breadth-First Traversal\n";
+    //     cout << "7. Display\n";
+    //     cout << "8. Exit\n";
+    //     cout << "Enter your choice: ";
+    //     cin >> choice;
 
-        switch (choice) {
-            case 1:
-                cout << "Enter value to insert: ";
-                cin >> value;
-                bst.insert(value);
-                break;
+    //     switch (choice) {
+    //         case 1:
+    //             cout << "Enter value to insert: ";
+    //             cin >> value;
+    //             bst.insert(value);
+    //             break;
 
-            case 2:
-                cout << "Enter value to delete: ";
-                cin >> value;
-                bst.remove(value);
-                break;
+    //         case 2:
+    //             cout << "Enter value to delete: ";
+    //             cin >> value;
+    //             bst.remove(value);
+    //             break;
 
-            case 3:
-                bst.inOrderTraversal();
-                break;
+    //         case 3:
+    //             bst.inOrderTraversal();
+    //             break;
 
-            case 4:
-                bst.preOrderTraversal();
-                break;
+    //         case 4:
+    //             bst.preOrderTraversal();
+    //             break;
 
-            case 5:
-                bst.postOrderTraversal();
-                break;
+    //         case 5:
+    //             bst.postOrderTraversal();
+    //             break;
 
-            case 6:
-                bst.breadthFirstTraversal();
-                break;
+    //         case 6:
+    //             bst.breadthFirstTraversal();
+    //             break;
 
-            case 7:
-                bst.showTree();
-                break;
+    //         case 7:
+    //             bst.showTree();
+    //             break;
 
-            case 8:
-                cout << "Exiting program...\n";
-                break;
+    //         case 8:
+    //             cout << "Exiting program...\n";
+    //             break;
 
-            default:
-                cout << "Invalid choice. Try again.\n";
-        }
-    } while (choice != 8);
+    //         default:
+    //             cout << "Invalid choice. Try again.\n";
+    //     }
+    // } while (choice != 8);
     
     return 0;
 }
