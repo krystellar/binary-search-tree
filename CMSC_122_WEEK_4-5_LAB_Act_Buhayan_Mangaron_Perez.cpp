@@ -10,7 +10,7 @@ using namespace std;
 
 class Node {
     public:
-        // variables need for the binary search tree
+        // variables need for the binary search bst
         int data;
         Node* left; // the left child
         Node* right; // the right child
@@ -25,18 +25,75 @@ class Node {
 
 class binarySearchTree {
 private:
-    Node* root; // points to the first or the root node of the tree
+    Node* root; // points to the first or the root node of the bst
 
+    // insert function
     Node* insertNode(Node* root, int data){
         if (root == nullptr){
-            return new Node(data);
+            return new Node(data); // creates new node if an empty root spot if found
         }
+        // recur down the bst if no empty root spot is found
         if (data < root->data){
-            root->left = insertNode(root->left, data);
+            root->left = insertNode(root->left, data); // if value is less than the parent, go left
         } else if (data > root->data){
-            root->right = insertNode(root->right, data);
+            root->right = insertNode(root->right, data); // if value is greater than the parent, go right
         }
         return root;
+    }
+
+    // delete function
+    Node* deleteNode(Node* root, int data){
+        if(root == nullptr){
+            return root;
+        }
+        
+        if(data < root->data){
+            root->left = deleteNode(root->left, data);
+        } else if (data > root->data){
+            root->right = deleteNode(root->right, data);
+        } else {
+            // case 1: no child
+            if (root->left == nullptr && root->right == nullptr) {
+                delete root;
+                return nullptr;
+            }
+            // case 2: one child
+            if (root->left ==nullptr){
+                Node* temp = root->right;
+                delete root;
+                return temp;
+            } else if (root->right == nullptr){
+                Node* temp = root->left;
+                delete root;
+                return temp;
+            }
+            // case 3: two children
+            Node* temp = findMinimum(root->right);
+            root->data = temp-> data;
+            root->right = deleteNode(root->right, temp->data);
+        }
+        return root;
+    }
+
+    Node* findMinimum(Node* root){
+        if (root == nullptr){
+            return nullptr;
+        }
+        while (root->left != nullptr){
+            root=root->left;
+        }
+        return root;
+    }
+
+    void display(Node* node, int space = 0, int height = 5) {
+        if (node == nullptr) return;
+        space += height;
+        display(node->right, space);
+        cout << endl;
+        for (int i = height; i < space; i++)
+            cout << " ";
+        cout << node->data << "\n";
+        display(node->left, space);
     }
 
     void inOrder(Node* node) {
@@ -82,11 +139,19 @@ private:
     }
 
     public:
-        binarySearchTree () { root = nullptr; }  // Constructor - initialize empty tree
+        binarySearchTree () { root = nullptr; }  // Constructor - initialize empty bst
 
         // Public methods
         void insert(int data){
-            root = insertNode(root, data);  // Insert new value into BST
+            root = insertNode(root, data); // insert new value into bst
+        }
+        void remove(int data){
+            root = deleteNode(root, data); // delete value in bst
+        }
+        void showTree() {
+            cout << "\nTree structure:\n";
+            display(root);
+            cout << endl;
         }
 
         void inOrderTraversal() {
@@ -117,16 +182,73 @@ private:
 int main() {
     binarySearchTree bst;
     
-    bst.insert(50);
-    bst.insert(30);
-    bst.insert(70);
-    bst.insert(20);
-    bst.insert(40);
+    // bst.insert(50);
+    // bst.insert(30);
+    // bst.insert(70);
+    // bst.insert(20);
+    // bst.insert(40);
     
-    bst.inOrderTraversal();   // Output: 20 30 40 50 70
-    bst.preOrderTraversal();  // Output: 50 30 20 40 70
-    bst.postOrderTraversal(); // Output: 20 40 30 70 50 
-    bst.breadthFirstTraversal(); // Output: 50 30 70 20 40
+    // bst.inOrderTraversal();   // Output: 20 30 40 50 70
+    // bst.preOrderTraversal();  // Output: 50 30 20 40 70
+    // bst.postOrderTraversal(); // Output: 20 40 30 70 50 
+    // bst.breadthFirstTraversal(); // Output: 50 30 70 20 40
+
+    int choice, value;
+
+    do {
+        cout << "\n====== BINARY SEARCH bst MENU ======\n";
+        cout << "1. Insert\n";
+        cout << "2. Delete\n";
+        cout << "3. Inorder Traversal\n";
+        cout << "4. Preorder Traversal\n";
+        cout << "5. Postorder Traversal\n";
+        cout << "6. Breadth-First Traversal\n";
+        cout << "7. Display\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter value to insert: ";
+                cin >> value;
+                bst.insert(value);
+                break;
+
+            case 2:
+                cout << "Enter value to delete: ";
+                cin >> value;
+                bst.remove(value);
+                break;
+
+            case 3:
+                bst.inOrderTraversal();
+                break;
+
+            case 4:
+                bst.preOrderTraversal();
+                break;
+
+            case 5:
+                bst.postOrderTraversal();
+                break;
+
+            case 6:
+                bst.breadthFirstTraversal();
+                break;
+
+            case 7:
+                bst.showTree();
+                break;
+
+            case 8:
+                cout << "Exiting program...\n";
+                break;
+
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 8);
     
     return 0;
 }
