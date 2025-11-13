@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <queue>
+#include <vector>
+#include <cmath>
 using namespace std;
 
 class Node {
@@ -86,34 +88,60 @@ private:
         return root;
     }
 
-    void display(Node* node, int space = 0, int level = 0) {
-        const int SPACING = 5; // Space between levels
-        
-        if (node == nullptr) return;
-        
-        // Increase distance between levels
-        space += SPACING;
-        
-        // Process right child first (so it appears on top in the display)
-        display(node->right, space, level + 1);
-        
-        // Print current node after space
-        cout << endl;
-        for (int i = SPACING; i < space; i++) {
-            if (i < space - 2) {
-                cout << " ";
-            } else {
-                cout << "-";
-            }
+    // Helper function to get tree height
+    int getHeight(Node* node) {
+        if (node == nullptr) return 0;
+        return 1 + max(getHeight(node->left), getHeight(node->right));
+    }
+
+    // Compact top-down display
+    void displayTree(Node* root) {
+        if (root == nullptr) {
+            cout << "Tree is empty!" << endl;
+            return;
         }
-        cout << node->data;
-        
-        // Process left child
-        display(node->left, space, level + 1);
-        
-        // Print newline only at the end of complete traversal
-        if (level == 0) {
+
+        queue<Node*> q;
+        q.push(root);
+        int level = 0;
+        int height = getHeight(root);
+
+        while (!q.empty()) {
+            int levelSize = q.size();
+            int indent = pow(2, height - level) - 2;
+            
+            // Print indentation
+            for (int i = 0; i < indent; i++) {
+                cout << " ";
+            }
+
+            // Print nodes
+            for (int i = 0; i < levelSize; i++) {
+                Node* current = q.front();
+                q.pop();
+
+                if (current != nullptr) {
+                    cout << (current->data < 10 ? " " : "") << current->data;
+                    q.push(current->left);
+                    q.push(current->right);
+                } else {
+                    cout << " *";
+                    q.push(nullptr);
+                    q.push(nullptr);
+                }
+
+                // Space between nodes
+                if (i < levelSize - 1) {
+                    for (int j = 0; j < indent * 2 + 2; j++) {
+                        cout << " ";
+                    }
+                }
+            }
             cout << endl;
+            level++;
+            
+            // Stop if we've reached maximum levels
+            if (level > height) break;
         }
     }
 
@@ -173,12 +201,12 @@ private:
             root = deleteNode(root, data, deleted); // delete value in bst
             if (!deleted) cout << "DNE" << endl; 
         }
+        
         void showTree() {
-            cout << "\nBinary Search Tree Structure (rotated 90° counter-clockwise):\n";
-            cout << "Right children are above, left children are below\n";
-            cout << "----------------------------------------\n";
-            display(root);
-            cout << "----------------------------------------\n";
+            cout << "\nBinary Search Tree Structure:\n";
+            cout << "=============================\n";
+            displayTree(root);
+            cout << "=============================\n";
         }
 
         void inOrderTraversal() {
@@ -209,7 +237,7 @@ private:
 int main() {
     binarySearchTree bst;
     
-    // Test with the sample data
+    // Test with balanced tree
     bst.insert(50);
     bst.insert(30);
     bst.insert(70);
@@ -217,16 +245,23 @@ int main() {
     bst.insert(40);
     bst.insert(60);
     bst.insert(80);
+    bst.insert(10);
+    bst.insert(25);
+    bst.insert(35);
+    bst.insert(45);
     
-    cout << "=== BINARY SEARCH TREE DEMONSTRATION ===" << endl;
+    cout << "=== BINARY SEARCH TREE DEMONSTRATION ===\n" << endl;
+    
+    cout << "Tree Structure:" << endl;
     bst.showTree();
     
+    cout << "\nTree Traversals:" << endl;
     bst.inOrderTraversal();   
     bst.preOrderTraversal();  
     bst.postOrderTraversal(); 
     bst.breadthFirstTraversal();
 
-    // Uncomment the menu for interactive testing
+    // Interactive menu
     int choice, value;
 
     do {
