@@ -26,7 +26,7 @@ class Node {
 class binarySearchTree {
 private:
     Node* root; // points to the first or the root node of the bst
-
+    bool deleted = false; 
     // insert function
     Node* insertNode(Node* root, int data){
         if (root == nullptr){
@@ -42,16 +42,17 @@ private:
     }
 
     // delete function
-    Node* deleteNode(Node* root, int data){
+    Node* deleteNode(Node* root, int data, bool &deleted){
         if(root == nullptr){
             return root;
         }
         
         if(data < root->data){
-            root->left = deleteNode(root->left, data);
+            root->left = deleteNode(root->left, data, deleted);
         } else if (data > root->data){
-            root->right = deleteNode(root->right, data);
+            root->right = deleteNode(root->right, data, deleted);
         } else {
+            deleted = true;
             // case 1: no child
             if (root->left == nullptr && root->right == nullptr) {
                 delete root;
@@ -70,7 +71,7 @@ private:
             // case 3: two children
             Node* temp = findMinimum(root->right);
             root->data = temp-> data;
-            root->right = deleteNode(root->right, temp->data);
+            root->right = deleteNode(root->right, temp->data, deleted);
         }
         return root;
     }
@@ -168,7 +169,9 @@ private:
             root = insertNode(root, data); // insert new value into bst
         }
         void remove(int data){
-            root = deleteNode(root, data); // delete value in bst
+            bool deleted = false;
+            root = deleteNode(root, data, deleted); // delete value in bst
+            if (!deleted) cout << "DNE" << endl; 
         }
         void showTree() {
             cout << "\nBinary Search Tree Structure (rotated 90° counter-clockwise):\n";
